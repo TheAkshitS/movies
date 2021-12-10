@@ -1,31 +1,32 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Home from '../views/Home.vue'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
+    path: '/',
+    name: 'Home',
     component: Home,
   },
   {
-    path: "/about",
-    name: "About",
+    path: '/login',
+    name: 'Login',
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+      import(/* webpackChunkName: "login" */ '../views/Login.vue'),
   },
-  {
-    path: "/login",
-    name: "Login",
-    component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
-  },
-];
+]
 
 const router = new VueRouter({
   routes,
-});
+})
 
-export default router;
+// navigation guard
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'Login' && !localStorage.getItem('isLoggedIn')) next({ name: 'Login' })
+  if (to.name === 'Login' && localStorage.getItem('isLoggedIn')) next({ name: 'Home' })
+  else next()
+})
+
+export default router
