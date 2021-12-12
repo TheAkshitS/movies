@@ -45,17 +45,13 @@
 </template>
 
 <script>
-const VALID_EMAIL = 'test@gmail.com'
-const VALID_PASSWORD = 'password'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Login',
 
   data() {
     return {
-      VALID_EMAIL,
-      VALID_PASSWORD,
-
       form: {
         email: '',
         password: '',
@@ -74,17 +70,28 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState('users', ['users']),
+
+    selectedUser() {
+      return this.users.find(user => user.email === this.form.email)
+    }
+  },
+
+  created() {
+    this.$store.dispatch('users/getUsers')
+  },
+
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
-        if (
-          this.form.email === this.VALID_EMAIL &&
-          this.form.password === this.VALID_PASSWORD
-        ) {
-          localStorage.setItem('isLoggedIn', true)
+        if (this.selectedUser) {
+          this.$store.dispatch('users/setSelectedUser', this.selectedUser)
+          this.$store.dispatch('app/showSuccess', `Welcome, ${this.selectedUser.name}`)
+
           this.$router.push('/')
         } else {
-          // TODO: Show error
+          this.$store.dispatch('app/showError', 'Invalid credentials, please try again!')
         }
       }
     },
