@@ -16,6 +16,12 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "login" */ '../views/Login.vue'),
   },
+  {
+    path: '/movie/:id',
+    name: 'Movie',
+    component: () =>
+      import(/* webpackChunkName: "Movie" */ '../views/Movie.vue'),
+  },
 ]
 
 const router = new VueRouter({
@@ -24,8 +30,8 @@ const router = new VueRouter({
 
 // navigation guard
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'Login' && !localStorage.getItem('isLoggedIn')) next({ name: 'Login' })
-  if (to.name === 'Login' && localStorage.getItem('isLoggedIn')) next({ name: 'Home' })
+  if (to.name !== 'Login' && !localStorage.getItem('selectedUser')) next({ name: 'Login' })
+  if (to.name === 'Login' && localStorage.getItem('selectedUser')) next({ name: 'Home' })
   else next()
 })
 
