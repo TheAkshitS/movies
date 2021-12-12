@@ -1,17 +1,23 @@
 <template>
-  <v-card flat color="grey" class="text-xs-center ma-3">
-    <v-responsive class="pt-4">
-    </v-responsive>
-    <v-card-text>
-      <div class="subheading">{{ movie.title }}</div>
-      <!-- class="grey--text" -->
-      <div>{{ movie.release_date }}</div>
-    </v-card-text>
+  <v-card class="mx-auto" max-width="400">
+    <v-img :src="movie.Poster" height="300px" />
+    <v-card-title>
+      {{ movie.Title }}
+    </v-card-title>
+
+    <v-card-subtitle>
+      {{ movie.Year }}
+    </v-card-subtitle>
+
     <v-card-actions>
-      <!-- <v-btn flat color="grey">
-          <v-icon small left>message</v-icon>
-          <span class="">Message</span>
-        </v-btn> -->
+      <v-spacer />
+      <v-btn
+        color="primary lighten-2"
+        text
+        @click="showMovieDetails(movie.imdbID)"
+      >
+        Details
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -22,6 +28,23 @@ export default {
     movie: {
       type: Object,
       required: true,
+    },
+  },
+
+  data() {
+    return {
+      show: false,
+    }
+  },
+
+  methods: {
+    showMovieDetails(id) {
+      this.$router.push({
+        name: 'Movie',
+        params: {
+          id,
+        },
+      })
     },
   },
 }
