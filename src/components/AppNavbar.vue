@@ -2,7 +2,9 @@
   <nav v-if="!isLoginPage">
     <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
-        <div class="text-uppercase">Movies</div>
+        <div class="nav-item text-uppercase" @click="$router.push('/')">
+          Movies
+        </div>
       </div>
 
       <v-spacer />
@@ -16,20 +18,26 @@
 
 <script>
 export default {
-  name: "AppNavbar",
+  name: 'AppNavbar',
 
   computed: {
     isLoginPage() {
-      return this.$route.name === "Login";
+      return this.$route.name === 'Login'
     },
   },
 
   methods: {
     logout() {
-      localStorage.clear();
+      localStorage.clear()
 
-      this.$router.push('/login');
+      this.$router.push('/login')
     },
   },
-};
+}
 </script>
+
+<style scoped>
+.nav-item {
+  cursor: pointer;
+}
+</style>
